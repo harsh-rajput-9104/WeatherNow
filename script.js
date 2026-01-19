@@ -1,8 +1,5 @@
-import { config } from 'dotenv';
-config();
-
 const CONFIG = {
-    API_KEY:  process.env.WEATHER_API_KEY,
+    API_KEY:  WEATHER_API_KEY,
     BASE_URL: 'https://api.openweathermap.org/data/2.5',
     GEO_URL: 'https://api.openweathermap.org/geo/1.0',
     DEFAULT_CITY: 'Vadodara',
@@ -24,7 +21,7 @@ const API = {
     async fetchWeatherByCity(city) {
         try {
             const response = await fetch(
-                `${CONFIG.BASE_URL}/weather?q=${encodeURIComponent(city)}&appid=${CONFIG.API_KEY}&units=${STATE.currentUnit}`
+                `${CONFIG.BASE_URL}/weather?q=${encodeURIComponent(city)}&appid=${WEATHER_API_KEY}&units=${STATE.currentUnit}`
             );
 
             if (!response.ok) {
