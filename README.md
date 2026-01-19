@@ -2,7 +2,7 @@
 
 A beautiful, production-ready weather application built with vanilla HTML, CSS, and JavaScript. Features real-time weather data, hourly and 7-day forecasts, air quality index, and a stunning glassmorphism UI with dark/light themes.
 
-![Weather App Preview](https://via.placeholder.com/1200x600/667eea/ffffff?text=WeatherNow+Premium+Weather+App)
+![Weather App Preview] ( https://via.placeholder.com/1200x600/667eea/ffffff?text=WeatherNow+Premium+Weather+App )
 
 ## Features
 
