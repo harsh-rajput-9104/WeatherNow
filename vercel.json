@@ -1,0 +1,3 @@
+{
+  "buildCommand": "sed -i \"s|__OPENWEATHER_API_KEY__|$OPENWEATHER_API_KEY|g\" config.js"
+}
