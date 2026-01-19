@@ -1,5 +1,5 @@
 const CONFIG = {
-    API_KEY: WEATHER_API_KEY,
+    API_KEY: '74729aaccfda189ddec40219ba3f0421',
     BASE_URL: 'https://api.openweathermap.org/data/2.5',
     GEO_URL: 'https://api.openweathermap.org/geo/1.0',
     DEFAULT_CITY: 'Vadodara',
