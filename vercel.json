@@ -1,3 +1,0 @@
-{
-  "buildCommand": "node -e \"const fs=require('fs');let f=fs.readFileSync('config.js','utf8');f=f.replace('__OPENWEATHER_API_KEY__',process.env.OPENWEATHER_API_KEY);fs.writeFileSync('config.js',f);\""
-}
