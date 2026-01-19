@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Premium Weather Forecast Application - Real-time weather data, hourly and 7-day forecasts">
+    <title>WeatherNow - Premium Weather Forecast</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="light-mode">
+
+    <div id="app" class="app-container">
+
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-cloud-sun"></i>
+                    <h1>WeatherNow</h1>
+                </div>
+
+                <div class="search-container">
+                    <div class="search-wrapper">
+                        <i class="fas fa-search search-icon"></i>
+                        <input
+                            type="text"
+                            id="searchInput"
+                            class="search-input"
+                            placeholder="Search for a city..."
+                            autocomplete="off"
+                        >
+                        <button id="searchBtn" class="search-btn">
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                    <div id="searchSuggestions" class="search-suggestions"></div>
+                    <div id="recentSearches" class="recent-searches"></div>
+                </div>
+
+                <div class="header-actions">
+                    <button id="locationBtn" class="icon-btn" title="Use my location">
+                        <i class="fas fa-location-crosshairs"></i>
+                    </button>
+                    <button id="unitToggle" class="icon-btn unit-toggle" title="Toggle temperature unit">
+                        <span class="unit-text">°C</span>
+                    </button>
+                    <button id="themeToggle" class="icon-btn" title="Toggle theme">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+
+            <div id="loader" class="loader-container hidden">
+                <div class="loader">
+                    <div class="loader-circle"></div>
+                    <p>Loading weather data...</p>
+                </div>
+            </div>
+
+            <div id="errorContainer" class="error-container hidden">
+                <div class="error-card">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3 id="errorTitle">Oops!</h3>
+                    <p id="errorMessage">Something went wrong</p>
+                    <button id="retryBtn" class="retry-btn">Try Again</button>
+                </div>
+            </div>
+
+            <div id="weatherContent" class="weather-content hidden">
+
+                <section class="current-weather-section">
+                    <div class="current-weather-card glass-card">
+                        <div class="location-info">
+                            <h2 id="cityName">London</h2>
+                            <p id="currentDate">Monday, January 15, 2024</p>
+                        </div>
+
+                        <div class="current-temp-container">
+                            <div class="weather-icon-large">
+                                <i id="weatherIcon" class="fas fa-cloud-sun"></i>
+                            </div>
+                            <div class="temp-info">
+                                <h1 id="currentTemp" class="current-temp">22°</h1>
+                                <p id="weatherDesc" class="weather-desc">Partly Cloudy</p>
+                                <p id="feelsLike" class="feels-like">Feels like 20°</p>
+                            </div>
+                        </div>
+
+                        <div class="weather-alerts" id="weatherAlerts"></div>
+                    </div>
+                </section>
+
+                <section class="weather-details-section">
+                    <div class="details-grid">
+                        <div class="detail-card glass-card">
+                            <div class="detail-icon">
+                                <i class="fas fa-wind"></i>
+                            </div>
+                            <div class="detail-info">
+                                <p class="detail-label">Wind Speed</p>
+                                <h3 id="windSpeed" class="detail-value">12 km/h</h3>
+                                <p id="windDirection" class="detail-sub">NW</p>
+                            </div>
+                        </div>
+
+                        <div class="detail-card glass-card">
+                            <div class="detail-icon">
+                                <i class="fas fa-droplet"></i>
+                            </div>
+                            <div class="detail-info">
+                                <p class="detail-label">Humidity</p>
+                                <h3 id="humidity" class="detail-value">65%</h3>
+                                <p class="detail-sub">Comfortable</p>
+                            </div>
+                        </div>
+
+                        <div class="detail-card glass-card">
+                            <div class="detail-icon">
+                                <i class="fas fa-gauge"></i>
+                            </div>
+                            <div class="detail-info">
+                                <p class="detail-label">Pressure</p>
+                                <h3 id="pressure" class="detail-value">1013 mb</h3>
+                                <p class="detail-sub">Normal</p>
+                            </div>
+                        </div>
+
+                        <div class="detail-card glass-card">
+                            <div class="detail-icon">
+                                <i class="fas fa-eye"></i>
+                            </div>
+                            <div class="detail-info">
+                                <p class="detail-label">Visibility</p>
+                                <h3 id="visibility" class="detail-value">10 km</h3>
+                                <p class="detail-sub">Clear</p>
+                            </div>
+                        </div>
+
+                        <div class="detail-card glass-card">
+                            <div class="detail-icon">
+                                <i class="fas fa-sun"></i>
+                            </div>
+                            <div class="detail-info">
+                                <p class="detail-label">UV Index</p>
+                                <h3 id="uvIndex" class="detail-value">5</h3>
+                                <p id="uvLevel" class="detail-sub">Moderate</p>
+                            </div>
+                        </div>
+
+                        <div class="detail-card glass-card aqi-card">
+                            <div class="detail-icon">
+                                <i class="fas fa-lungs"></i>
+                            </div>
+                            <div class="detail-info">
+                                <p class="detail-label">Air Quality</p>
+                                <h3 id="aqiValue" class="detail-value">42</h3>
+                                <p id="aqiLevel" class="detail-sub aqi-good">Good</p>
+                            </div>
+                        </div>
+
+                        <div class="detail-card glass-card sunrise-card">
+                            <div class="detail-icon">
+                                <i class="fas fa-sunrise"></i>
+                            </div>
+                            <div class="detail-info">
+                                <p class="detail-label">Sunrise</p>
+                                <h3 id="sunrise" class="detail-value">06:45 AM</h3>
+                            </div>
+                        </div>
+
+                        <div class="detail-card glass-card sunset-card">
+                            <div class="detail-icon">
+                                <i class="fas fa-sunset"></i>
+                            </div>
+                            <div class="detail-info">
+                                <p class="detail-label">Sunset</p>
+                                <h3 id="sunset" class="detail-value">05:30 PM</h3>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="hourly-forecast-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-clock"></i> Hourly Forecast</h2>
+                        <p>Next 24 hours</p>
+                    </div>
+                    <div class="hourly-forecast-container">
+                        <button class="scroll-btn scroll-left" id="scrollLeft">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <div id="hourlyForecast" class="hourly-forecast"></div>
+                        <button class="scroll-btn scroll-right" id="scrollRight">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </section>
+
+                <section class="daily-forecast-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-calendar-days"></i> 7-Day Forecast</h2>
+                        <p>Weekly weather outlook</p>
+                    </div>
+                    <div id="dailyForecast" class="daily-forecast"></div>
+                </section>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>Powered by <a href="https://openweathermap.org/" target="_blank">OpenWeatherMap API</a></p>
+            <p>Built with ❤️ by WeatherNow Team</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
