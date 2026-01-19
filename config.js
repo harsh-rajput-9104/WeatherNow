@@ -1,1 +1,0 @@
-const WEATHER_API_KEY = "091bc0401dbb7200e38082d9122dca8b";
