@@ -1,13 +1,14 @@
 const CONFIG = {
-    API_KEY:  WEATHER_API_KEY,
-    BASE_URL: 'https://api.openweathermap.org/data/2.5',
-    GEO_URL: 'https://api.openweathermap.org/geo/1.0',
     DEFAULT_CITY: 'Vadodara',
     STORAGE_KEY: 'weatherApp_recentSearches',
     THEME_KEY: 'weatherApp_theme',
     UNIT_KEY: 'weatherApp_unit',
     MAX_RECENT_SEARCHES: 5
 };
+
+const BASE_URL = "https://api.openweathermap.org/data/2.5";
+// Safely access env vars to prevent crashes if not running in Vite
+const API_KEY = (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_WEATHER_API_KEY) || '';
 
 const STATE = {
     currentUnit: localStorage.getItem(CONFIG.UNIT_KEY) || 'metric',
@@ -21,7 +22,7 @@ const API = {
     async fetchWeatherByCity(city) {
         try {
             const response = await fetch(
-                `${CONFIG.BASE_URL}/weather?q=${encodeURIComponent(city)}&appid=${WEATHER_API_KEY}&units=${STATE.currentUnit}`
+                `${BASE_URL}/weather?q=${encodeURIComponent(city)}&appid=${API_KEY}&units=${STATE.currentUnit}`
             );
 
             if (!response.ok) {
@@ -43,7 +44,7 @@ const API = {
     async fetchWeatherByCoords(lat, lon) {
         try {
             const response = await fetch(
-                `${CONFIG.BASE_URL}/weather?lat=${lat}&lon=${lon}&appid=${CONFIG.API_KEY}&units=${STATE.currentUnit}`
+                `${BASE_URL}/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=${STATE.currentUnit}`
             );
 
             if (!response.ok) {
@@ -59,7 +60,7 @@ const API = {
     async fetchForecast(lat, lon) {
         try {
             const response = await fetch(
-                `${CONFIG.BASE_URL}/forecast?lat=${lat}&lon=${lon}&appid=${CONFIG.API_KEY}&units=${STATE.currentUnit}`
+                `${BASE_URL}/forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=${STATE.currentUnit}`
             );
 
             if (!response.ok) {
@@ -75,7 +76,7 @@ const API = {
     async fetchAirQuality(lat, lon) {
         try {
             const response = await fetch(
-                `${CONFIG.BASE_URL}/air_pollution?lat=${lat}&lon=${lon}&appid=${CONFIG.API_KEY}`
+                `${BASE_URL}/air_pollution?lat=${lat}&lon=${lon}&appid=${API_KEY}`
             );
 
             if (!response.ok) {
@@ -91,7 +92,7 @@ const API = {
     async searchCities(query) {
         try {
             const response = await fetch(
-                `${CONFIG.GEO_URL}/direct?q=${encodeURIComponent(query)}&limit=5&appid=${CONFIG.API_KEY}`
+                `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(query)}&limit=5&appid=${API_KEY}`
             );
 
             if (!response.ok) {
@@ -211,9 +212,9 @@ const Utils = {
         if (fromUnit === toUnit) return temp;
 
         if (fromUnit === 'metric' && toUnit === 'imperial') {
-            return (temp * 9/5) + 32;
+            return (temp * 9 / 5) + 32;
         } else if (fromUnit === 'imperial' && toUnit === 'metric') {
-            return (temp - 32) * 5/9;
+            return (temp - 32) * 5 / 9;
         }
         return temp;
     },
@@ -461,9 +462,9 @@ const UI = {
 
             const time = new Date(hour.time * 1000);
             const timeStr = time.getHours() === 0 ? '12 AM' :
-                          time.getHours() < 12 ? `${time.getHours()} AM` :
-                          time.getHours() === 12 ? '12 PM' :
-                          `${time.getHours() - 12} PM`;
+                time.getHours() < 12 ? `${time.getHours()} AM` :
+                    time.getHours() === 12 ? '12 PM' :
+                        `${time.getHours() - 12} PM`;
 
             const iconClass = Utils.getWeatherIcon(hour.icon, hour.main);
             const unitSymbol = STATE.currentUnit === 'metric' ? '°C' : '°F';
@@ -590,10 +591,10 @@ const App = {
         this.loadTheme();
         this.loadUnit();
 
-        if (CONFIG.API_KEY === 'YOUR_OPENWEATHERMAP_API_KEY') {
+        if (!API_KEY) {
             UI.showError(
                 'API Key Required',
-                'Please add your OpenWeatherMap API key in the script.js file to use this application.'
+                'Please add your VITE_WEATHER_API_KEY in the .env file to use this application.'
             );
             return;
         }
